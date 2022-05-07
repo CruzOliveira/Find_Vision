@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@react-navigation/native": "^6.0.10",
     "react-native-paper": "^4.12.1"
   }
 }
