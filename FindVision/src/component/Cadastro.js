@@ -8,6 +8,8 @@ export default function Cadastrar(){
 
     return(
     <View>
+        <Image source={require('../img/LogoCadastro.png')}
+        />
         <View>
 
             <Text>Nome</Text>

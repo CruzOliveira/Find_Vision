@@ -5,7 +5,7 @@ export default function App(){
     return(
         <View>
 
-            <Image source={require('../img/')}
+            <Image source={require('../img/Logo.png')}
             />
 
             <View>

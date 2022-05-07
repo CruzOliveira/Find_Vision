@@ -6,9 +6,11 @@ import {MainStackNavigator} from './src/navigation/StackNavagators'
 
 const App = () => {
   return(
+
     <NavigationContainer>
       <MainStackNavigator />
     </NavigationContainer>
+    
   );
 };
 
