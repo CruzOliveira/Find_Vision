@@ -22,7 +22,9 @@ export default function App(){
                 <TouchableOpacity>
                     <Text>Esqueci a senha</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                onPress={ () => navigation.replace('Cadastrar')}
+                >
                     <Text>Cadastrar</Text>
                 </TouchableOpacity>
             </View>
