@@ -1,12 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { View } from 'react-native';
-import Login from './src/component/Login'
+import {NavigationContainer} from '@react-navigation/native';
+import {MainStackNavigator} from './src/navigation/StackNavagators'
 
-export default function App() {
-  return (
-    <View>
-      <Login/>
-    </View>
+const App = () => {
+  return(
+    <NavigationContainer>
+      <MainStackNavigator />
+    </NavigationContainer>
   );
-}
+};
+
+export default App;
+
