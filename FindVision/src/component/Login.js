@@ -1,25 +1,16 @@
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { SafeAreaView, Image, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-
+import {Ionicons} from '@expo/vector-icons';
 
 const Login = ({navigation}) =>{
     return(
 
         <SafeAreaView style={styles.conteinerPai}>
+            <StatusBar backgroundColor="#FF9400" />
             <View style={styles.conteinerImg}>
                 <Image source={require('../img/Logo.png')}
                 style={styles.logo}/>
-            </View>
-            <View 
-            style={styles.conteinerImputs}>
-                <View style={styles.email}>
-                    <Text style={styles.title}>Email</Text>
-                    <TextInput style={styles.Input}/>
-                </View>
-                <View style={styles.senha}>
-                    <Text style={styles.title}>Senha</Text>
-                    <TextInput style={styles.Input}/>
-                </View>
             </View>
 
             <View style={styles.link}>
@@ -51,6 +42,9 @@ const styles = StyleSheet.create({
         fontFamily:'Roboto',
 
     },
+    area:{
+    },
+    
 
     button:{
         justifyContent:'center',
@@ -82,33 +76,12 @@ const styles = StyleSheet.create({
         height:192,
     },
 
-    conteinerImputs:{
-        marginHorizontal: 85,
-        marginTop:34,
-        marginBottom:5,
-        elevation: 20,
-    },
-
-    title:{
-        color:'#BA872A',
-        fontSize: 16,
-        fontWeight: '700',
-    },
-
-    Input:{
-        backgroundColor:'#E8E6E2',
-        padding: 4,
-        borderRadius: 5,
-    },
-
     titleCadastrar:{
         color:'#BA872A',
         textDecorationLine:'underline',
         fontSize: 16,
         fontWeight: '600',
-        
     },
-
     titleEsqueci:{
         color:'#BA872A',
         textDecorationLine:'underline',
@@ -125,11 +98,9 @@ const styles = StyleSheet.create({
     },
 
     email:{
-        marginBottom: 20,
-        
+    
     },
     senha:{
-        marginBottom: 6,
     },
 
 
