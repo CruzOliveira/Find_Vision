@@ -4,7 +4,7 @@ import { ScrollView, TextInput, TouchableOpacity, View, Image, Text, StyleSheet,
 import { Checkbox } from 'react-native-paper'
 import {Ionicons} from '@expo/vector-icons';
 
-export default function Cadastrar(){
+const Cadastro = ({navigation}) =>{
 
     const [checked, setChecked] = useState(false);
     const [input, setInput] = useState('');
@@ -83,7 +83,7 @@ export default function Cadastrar(){
                 </Text>
             </View>
             <View style={styles.areaButton}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={ () => navigation.replace('Login')}>
                     <Text style={styles.textButton}>CADASTRAR</Text>
                 </TouchableOpacity>
             </View>
@@ -92,6 +92,7 @@ export default function Cadastrar(){
         </ScrollView>
     </SafeAreaView>
 )};
+export default Cadastro;
 const styles = StyleSheet.create({
     conteinerPai:{
         flex: 1,
