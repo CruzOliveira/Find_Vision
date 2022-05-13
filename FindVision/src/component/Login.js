@@ -1,9 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, {useState} from "react";
 import { SafeAreaView, Image, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 
 const Login = ({navigation}) =>{
+    const [input, setInput] = useState('');
+    const [hidePass, setHidePass] = useState(true);
     return(
 
         <SafeAreaView style={styles.conteinerPai}>
@@ -11,6 +13,22 @@ const Login = ({navigation}) =>{
             <View style={styles.conteinerImg}>
                 <Image source={require('../img/Logo.png')}
                 style={styles.logo}/>
+            </View>
+            <Text style={styles.textEmail}>Email</Text>
+            <View style={styles.inputAreaEmail}>
+                <TextInput style={styles.inputEmail}/>
+            </View>
+            <Text style={styles.textSenha}>Senha</Text>
+            <View style={styles.inputArea}>
+                <TextInput style={styles.input}
+                value={input}
+                onChangeText={(texto) => setInput(texto)}
+                secureTextEntry={hidePass}
+                />
+                <TouchableOpacity style={styles.icon} onPress={() => setHidePass(!hidePass)}>
+                    <Ionicons name="eye" color='#BBB5AA' size={25}/>
+                </TouchableOpacity>
+
             </View>
 
             <View style={styles.link}>
@@ -42,9 +60,62 @@ const styles = StyleSheet.create({
         fontFamily:'Roboto',
 
     },
-    area:{
+    inputAreaEmail:{
+        width:'70%',
+        backgroundColor:'#F9F8F6',
+        height: 42,
+        alignItems:'center',
+        marginHorizontal:60,
+        borderRadius: 5,
+        borderWidth: 2,
+        borderColor:'#E8E6E2',
+        elevation: 20,
+        marginBottom:20,
     },
-    
+    inputEmail:{
+        width:'93%',
+        height: 41,
+        color:'black',
+    },
+    inputArea:{
+        flexDirection:'row',
+        width:'70%',
+        backgroundColor:'#F9F8F6',
+        height: 42,
+        alignItems:'center',
+        marginHorizontal:60,
+        borderRadius: 5,
+        borderWidth: 2,
+        borderColor:'#E8E6E2',
+        elevation: 20,
+        
+    }, 
+    input:{
+        width:'85%',
+        height: 41,
+        color:'black',
+        padding: 8,
+    },
+    icon:{
+        width:'15%',
+        height:41,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    textEmail:{
+        marginHorizontal:60,
+        fontSize: 16,
+        color:'#BA872A',
+        fontWeight: '700',
+    },
+
+    textSenha:{
+        marginHorizontal:60,
+        fontSize: 16,
+        color:'#BA872A',
+        fontWeight: '700',
+
+    },
 
     button:{
         justifyContent:'center',
@@ -62,6 +133,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 2,
         borderColor:'#B18739',
+        elevation: 20,
     },
 
     conteinerImg:{
@@ -78,31 +150,22 @@ const styles = StyleSheet.create({
 
     titleCadastrar:{
         color:'#BA872A',
-        textDecorationLine:'underline',
         fontSize: 16,
         fontWeight: '600',
     },
     titleEsqueci:{
         color:'#BA872A',
-        textDecorationLine:'underline',
         fontSize: 16,
-        marginHorizontal:55,
+        marginLeft:100,
         fontWeight: '600',
         
     },
 
     link:{
         flexDirection:'row',
-        marginHorizontal: 85,
+        marginHorizontal: 60,
         marginBottom:3,
+        marginTop:10,
     },
-
-    email:{
-    
-    },
-    senha:{
-    },
-
-
 
 });

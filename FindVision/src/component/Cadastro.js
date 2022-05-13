@@ -1,5 +1,6 @@
+import { StatusBar } from "expo-status-bar";
 import React, {useState} from "react";
-import { TextInput, TouchableOpacity, View } from 'react-native'
+import { TextInput, TouchableOpacity, View, Image, Text, StyleSheet, SafeAreaView } from 'react-native'
 import { Checkbox } from 'react-native-paper'
 
 export default function Cadastrar(){
@@ -7,7 +8,8 @@ export default function Cadastrar(){
     const [checked, setChecked] = React.useState(false);
 
     return(
-    <View>
+    <SafeAreaView style={styles.conteinerPai}>
+         <StatusBar backgroundColor="#FF9400" />
         <Image source={require('../img/LogoCadastro.png')}
         />
         <View>
@@ -37,7 +39,7 @@ export default function Cadastrar(){
                 onPress={() => {
                 setChecked2(!checked);
                 }}
-                /><Text style={styles.textTermo}>
+                /><Text>
                     Concordo com os Termos e Condições
                 </Text>
             </View>
@@ -48,5 +50,15 @@ export default function Cadastrar(){
             </View>
             
         </View>
-    </View>
-)}
+    </SafeAreaView>
+)};
+const styles = StyleSheet.create({
+    conteinerPai:{
+        flex: 1,
+        backgroundColor:'#464237',
+        fontFamily:'Roboto',
+    },
+
+
+
+});
