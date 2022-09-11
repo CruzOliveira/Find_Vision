@@ -20,7 +20,7 @@ const Login = ({ navigation }) => {
   const onInit = async () => {
     const ret = await AsyncStorage.getItem('auth');
     if (ret != null) {
-      navigation.replace('Lista');
+      navigation.replace('Cadastro');
     }
   };
   const login = async () => {
@@ -43,7 +43,7 @@ const Login = ({ navigation }) => {
           const obj = await response.json();
           console.log('Login 3', obj);
           await AsyncStorage.setItem('auth', JSON.stringify(obj));
-          navigation.replace('Lista');
+          navigation.replace('Cadastro');
         } else {
           console.log('Login 4');
           alert('Senha invalida');
@@ -99,7 +99,7 @@ const Login = ({ navigation }) => {
       <View>
         <TouchableOpacity
           onPress={() => {
-            login;
+            navigation.replace('Cadastrar');
           }}
           style={styles.button}
         >

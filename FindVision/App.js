@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { MainStackNavigator } from './src/navigation/SttackNavagators';
+import { MainStackNavigator } from './src/navigation/SttackNavagators.js';
 
 const App = () => {
   return (
