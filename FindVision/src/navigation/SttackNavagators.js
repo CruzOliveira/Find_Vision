@@ -22,7 +22,7 @@ export const MainStackNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Cadastrar"
+        name="Cadastro"
         component={Cadastro}
         options={{ headerShown: false }}
       />
