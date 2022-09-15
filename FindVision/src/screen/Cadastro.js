@@ -15,25 +15,51 @@ import {
 } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
+import uuid from 'react-native-uuid';
 
 const Cadastro = ({ navigation }) => {
   const [checked, setChecked] = useState(false);
   const [hidePass, setHidePass] = useState(true);
-  const [inputEmail, setInputEmail] = useState('');
-  const [inputSenha, setInputSenha] = useState('');
-  const { getEmail, setEmail } = useAsyncStorage('inputEmail');
-  const { getSenha, setSenha } = useAsyncStorage('inputSenha');
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [nacimento, setNacimento] = useState('');
+  const [numero, setNumero] = useState('');
+  const [cidade, setCidade] = useState('');
+  const { getItem, setItem } = useAsyncStorage('@savepass:passwords');
 
-  const armazenarValor = async (email, senha) => {
+  async function handleNew() {
     try {
-      await setInputEmail(email);
-      await setInputSenha(senha);
-      setEmail(email);
-      setSenha(senha);
-    } catch (e) {
-      throw new Error('Erro ao inserir os dados!');
+      const id = uuid.v4();
+
+      const newData = {
+        id,
+        nome,
+        email,
+        senha,
+        cpf,
+        nacimento,
+        numero,
+        cidade,
+      };
+      await AsyncStorage.setItem('@savepass:senha', JSON.stringify(newData));
+      console.log(newData);
+      navigation.replace('Login');
+      navigator;
+      Toast.show({
+        type: 'success',
+        text1: 'Cadastrado com sucesso!',
+      });
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Nao foi possivel cadastrar.',
+      });
     }
-  };
+  }
   return (
     <SafeAreaView style={styles.conteinerPai}>
       <ScrollView>
@@ -45,19 +71,22 @@ const Cadastro = ({ navigation }) => {
         <View style={styles.conteinerCadastro}>
           <Text style={styles.title}>Nome</Text>
           <View style={styles.areaInputNome}>
-            <TextInput style={styles.Input} />
+            <TextInput
+              onChangeText={(text) => setNome(text)}
+              style={styles.Input}
+            />
           </View>
           <Text style={styles.title}>Email</Text>
           <View style={styles.areaInputEmail}>
             <TextInput
-              onChangeText={(text) => setInputEmail(text)}
+              onChangeText={(text) => setEmail(text)}
               style={styles.Input}
             />
           </View>
           <Text style={styles.title}>Senha</Text>
           <View style={styles.areaInputSenha}>
             <TextInput
-              onChangeText={(text) => setInputSenha(text)}
+              onChangeText={(text) => setSenha(text)}
               secureTextEntry={hidePass}
               style={styles.InputSenha}
             />
@@ -75,6 +104,7 @@ const Cadastro = ({ navigation }) => {
           <View style={styles.areaInputCPFNacimento}>
             <View style={styles.areaInputCPF}>
               <TextInput
+                onChangeText={(text) => setCpf(text)}
                 keyboardType="numeric"
                 placeholder="000.000.000-00"
                 style={styles.InputDuplo}
@@ -83,6 +113,7 @@ const Cadastro = ({ navigation }) => {
 
             <View style={styles.areaInputNacimento}>
               <TextInput
+                onChangeText={(text) => setNacimento(text)}
                 keyboardType="numeric"
                 placeholder="00/00/0000"
                 style={styles.InputDuplo}
@@ -93,6 +124,7 @@ const Cadastro = ({ navigation }) => {
           <Text style={styles.title}>Numero</Text>
           <View style={styles.areaInputNumero}>
             <TextInput
+              onChangeText={(text) => setNumero(text)}
               placeholder="(00)0000-0000"
               keyboardType="numeric"
               style={styles.Input}
@@ -100,25 +132,14 @@ const Cadastro = ({ navigation }) => {
           </View>
           <Text style={styles.title}>Cidade</Text>
           <View style={styles.areaInputCidade}>
-            <TextInput style={styles.Input} />
+            <TextInput
+              onChangeText={(text) => setCidade(text)}
+              style={styles.Input}
+            />
           </View>
 
-          <View style={styles.areaCheckbox}>
-            <Checkbox
-              uncheckedColor="#D2CEC5"
-              status={checked ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setChecked(!checked);
-              }}
-            />
-            <Text style={styles.textCheckbox}>
-              Concordo com os Termos e Condições
-            </Text>
-          </View>
           <View style={styles.areaButton}>
-            <TouchableOpacity
-              onPress={() => armazenarValor(inputEmail, inputSenha)}
-            >
+            <TouchableOpacity onPress={() => handleNew()}>
               <Text style={styles.textButton}>CADASTRAR</Text>
             </TouchableOpacity>
           </View>

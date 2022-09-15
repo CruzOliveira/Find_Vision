@@ -13,21 +13,31 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage, {
   useAsyncStorage,
 } from '@react-native-async-storage/async-storage';
+import e from 'express';
 
 const Login = ({ navigation }) => {
   const [hidePass, setHidePass] = useState(true);
-  const [inputEmail, setInputEmail] = useState('');
-  const [inputSenha, setInputSenha] = useState('');
-  const { getEmail, setEmail } = useAsyncStorage('inputEmail');
-  const { getSenha, setSenha } = useAsyncStorage('inputSenha');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [data, setData] = useState('');
+  const { getItem, setItem } = useAsyncStorage('@savepass:passwords');
 
-  const validarLogin = async (email, senha) => {
-    const bancoDadosSenha = await getSenha();
-    const bancoDadosEmail = await getEmail();
-    if (email === bancoDadosEmail && senha === bancoDadosSenha) {
-      alert('Login valido');
+  async function handleFetchData() {
+    const response = await getItem();
+    const data = response ? JSON.parse(response) : [];
+    setData(data);
+  }
+  function validarLogin() {
+    if (email === data.email && senha === data.senha) {
+      alert('Bem vindo', data.nome);
+    } else {
+      alert('acesso negado');
     }
-  };
+  }
+
+  useEffect(() => {
+    handleFetchData();
+  }, []);
 
   return (
     <SafeAreaView style={styles.conteinerPai}>
@@ -39,16 +49,14 @@ const Login = ({ navigation }) => {
       <View style={styles.inputAreaEmail}>
         <TextInput
           style={styles.inputEmail}
-          value={inputEmail}
-          onChangeText={(value) => setInputEmail(value)}
+          onChangeText={(text) => setEmail(text)}
         />
       </View>
       <Text style={styles.textSenha}>Senha</Text>
       <View style={styles.inputArea}>
         <TextInput
           style={styles.inputSenha}
-          value={inputSenha}
-          onChangeText={(value) => setInputSenha(value)}
+          onChangeText={(text) => setSenha(text)}
           secureTextEntry={hidePass}
         />
         <TouchableOpacity
@@ -69,12 +77,7 @@ const Login = ({ navigation }) => {
       </View>
 
       <View>
-        <TouchableOpacity
-          onPress={() => {
-            validarLogin(inputEmail, inputSenha);
-          }}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={() => validarLogin()} style={styles.button}>
           <Text style={styles.TextButton}>ENTRAR</Text>
         </TouchableOpacity>
       </View>
