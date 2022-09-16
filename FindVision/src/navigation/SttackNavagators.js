@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 export const MainStackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Cadastro"
+      initialRouteName="Login"
       screenOptions={{
         headerTintColor: 'white',
         headerStyle: {

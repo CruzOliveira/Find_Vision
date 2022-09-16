@@ -23,43 +23,30 @@ const Cadastro = ({ navigation }) => {
   const [hidePass, setHidePass] = useState(true);
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
   const [cpf, setCpf] = useState('');
   const [nacimento, setNacimento] = useState('');
   const [numero, setNumero] = useState('');
   const [cidade, setCidade] = useState('');
-  const { getItem, setItem } = useAsyncStorage('@savepass:passwords');
 
-  async function handleNew() {
-    try {
-      const id = uuid.v4();
-
-      const newData = {
-        id,
-        nome,
-        email,
-        senha,
-        cpf,
-        nacimento,
-        numero,
-        cidade,
-      };
-      await AsyncStorage.setItem('@savepass:senha', JSON.stringify(newData));
-      console.log(newData);
+  const handleCreateUser = async () => {
+    if (
+      nome === '' ||
+      email === '' ||
+      password === '' ||
+      cpf === '' ||
+      nacimento === '' ||
+      numero === '' ||
+      cidade === ''
+    ) {
+      alert('Ops...E obrigatório preencher todas as informacoes!');
+    } else {
+      await AsyncStorage.setItem('@asyncStorage:nameUser', nome);
+      await AsyncStorage.setItem('@asyncStorage:emailUser', email);
+      await AsyncStorage.setItem('@asyncStorage:passUser', password);
       navigation.replace('Login');
-      navigator;
-      Toast.show({
-        type: 'success',
-        text1: 'Cadastrado com sucesso!',
-      });
-    } catch (error) {
-      console.log(error);
-      Toast.show({
-        type: 'error',
-        text1: 'Nao foi possivel cadastrar.',
-      });
     }
-  }
+  };
   return (
     <SafeAreaView style={styles.conteinerPai}>
       <ScrollView>
@@ -86,7 +73,7 @@ const Cadastro = ({ navigation }) => {
           <Text style={styles.title}>Senha</Text>
           <View style={styles.areaInputSenha}>
             <TextInput
-              onChangeText={(text) => setSenha(text)}
+              onChangeText={(text) => setPassword(text)}
               secureTextEntry={hidePass}
               style={styles.InputSenha}
             />
@@ -104,19 +91,19 @@ const Cadastro = ({ navigation }) => {
           <View style={styles.areaInputCPFNacimento}>
             <View style={styles.areaInputCPF}>
               <TextInput
-                onChangeText={(text) => setCpf(text)}
                 keyboardType="numeric"
                 placeholder="000.000.000-00"
                 style={styles.InputDuplo}
+                onChangeText={(text) => setCpf(text)}
               />
             </View>
 
             <View style={styles.areaInputNacimento}>
               <TextInput
-                onChangeText={(text) => setNacimento(text)}
                 keyboardType="numeric"
                 placeholder="00/00/0000"
                 style={styles.InputDuplo}
+                onChangeText={(text) => setNacimento(text)}
               />
             </View>
           </View>
@@ -124,10 +111,10 @@ const Cadastro = ({ navigation }) => {
           <Text style={styles.title}>Numero</Text>
           <View style={styles.areaInputNumero}>
             <TextInput
-              onChangeText={(text) => setNumero(text)}
               placeholder="(00)0000-0000"
               keyboardType="numeric"
               style={styles.Input}
+              onChangeText={(text) => setNumero(text)}
             />
           </View>
           <Text style={styles.title}>Cidade</Text>
@@ -139,7 +126,7 @@ const Cadastro = ({ navigation }) => {
           </View>
 
           <View style={styles.areaButton}>
-            <TouchableOpacity onPress={() => handleNew()}>
+            <TouchableOpacity onPress={() => handleCreateUser()}>
               <Text style={styles.textButton}>CADASTRAR</Text>
             </TouchableOpacity>
           </View>
