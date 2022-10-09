@@ -1,8 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import AsyncStorage, {
-  useAsyncStorage,
-} from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   TextInput,
@@ -15,37 +12,80 @@ import {
 } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import Toast from 'react-native-toast-message';
-import uuid from 'react-native-uuid';
+import { createUserWithCadastro } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
-const Cadastro = ({ navigation }) => {
+export default function Cadastrar({ navigation }) {
   const [checked, setChecked] = useState(false);
   const [hidePass, setHidePass] = useState(true);
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [nacimento, setNacimento] = useState('');
-  const [numero, setNumero] = useState('');
-  const [cidade, setCidade] = useState('');
+  const [registerInformation, setRegisterInformation] = useState({
+    nome: '',
+    email: '',
+    password: '',
+    cpf: '',
+    nacimento: '',
+    numero: '',
+    cidade: '',
+  });
 
-  const handleCreateUser = async () => {
-    if (
-      nome === '' ||
-      email === '' ||
-      password === '' ||
-      cpf === '' ||
-      nacimento === '' ||
-      numero === '' ||
-      cidade === ''
-    ) {
-      alert('Ops...E obrigatório preencher todas as informacoes!');
-    } else {
-      await AsyncStorage.setItem('@asyncStorage:nameUser', nome);
-      await AsyncStorage.setItem('@asyncStorage:emailUser', email);
-      await AsyncStorage.setItem('@asyncStorage:passUser', password);
-      navigation.replace('Login');
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Perfil' }],
+        });
+      }
+    });
+  }, []);
+
+  const cadastrar = async () => {
+    console.log(registerInformation);
+
+    if (registerInformation.nome == '') {
+      alert('Preencha seu nome.');
+      return;
     }
+
+    if (registerInformation.email == '') {
+      alert('Preencha sua email.');
+      return;
+    }
+    if (registerInformation.password == '') {
+      alert('Preencha sua senha.');
+      return;
+    }
+    if (registerInformation.cpf == '') {
+      alert('Preencha sua cpf.');
+      return;
+    }
+    if (registerInformation.nacimento == '') {
+      alert('Preencha sua data de nacimento.');
+      return;
+    }
+    if (registerInformation.numero == '') {
+      alert('Preencha seu numero.');
+      return;
+    }
+    if (registerInformation.cidade == '') {
+      alert('Preencha sua cidade.');
+      return;
+    }
+
+    createUserWithCadastro(
+      auth,
+      registerInformation.nome,
+      registerInformation.email,
+      registerInformation.password,
+      registerInformation.cpf,
+      registerInformation.nacimento,
+      registerInformation.numero,
+      registerInformation.cidade,
+    )
+      .then(() => {
+        navigation.replace('Perfil');
+      })
+      .catch((err) => alert(err.message));
   };
   return (
     <SafeAreaView style={styles.conteinerPai}>
@@ -59,21 +99,36 @@ const Cadastro = ({ navigation }) => {
           <Text style={styles.title}>Nome</Text>
           <View style={styles.areaInputNome}>
             <TextInput
-              onChangeText={(text) => setNome(text)}
+              onChangeText={(value) =>
+                setRegisterInformation({
+                  ...registerInformation,
+                  nome: value,
+                })
+              }
               style={styles.Input}
             />
           </View>
           <Text style={styles.title}>Email</Text>
           <View style={styles.areaInputEmail}>
             <TextInput
-              onChangeText={(text) => setEmail(text)}
+              onChangeText={(value) =>
+                setRegisterInformation({
+                  ...registerInformation,
+                  email: value,
+                })
+              }
               style={styles.Input}
             />
           </View>
           <Text style={styles.title}>Senha</Text>
           <View style={styles.areaInputSenha}>
             <TextInput
-              onChangeText={(text) => setPassword(text)}
+              onChangeText={(value) =>
+                setRegisterInformation({
+                  ...registerInformation,
+                  password: value,
+                })
+              }
               secureTextEntry={hidePass}
               style={styles.InputSenha}
             />
@@ -94,7 +149,12 @@ const Cadastro = ({ navigation }) => {
                 keyboardType="numeric"
                 placeholder="000.000.000-00"
                 style={styles.InputDuplo}
-                onChangeText={(text) => setCpf(text)}
+                onChangeText={(value) =>
+                  setRegisterInformation({
+                    ...registerInformation,
+                    cpf: value,
+                  })
+                }
               />
             </View>
 
@@ -103,7 +163,12 @@ const Cadastro = ({ navigation }) => {
                 keyboardType="numeric"
                 placeholder="00/00/0000"
                 style={styles.InputDuplo}
-                onChangeText={(text) => setNacimento(text)}
+                onChangeText={(value) =>
+                  setRegisterInformation({
+                    ...registerInformation,
+                    nacimento: value,
+                  })
+                }
               />
             </View>
           </View>
@@ -114,19 +179,29 @@ const Cadastro = ({ navigation }) => {
               placeholder="(00)0000-0000"
               keyboardType="numeric"
               style={styles.Input}
-              onChangeText={(text) => setNumero(text)}
+              onChangeText={(value) =>
+                setRegisterInformation({
+                  ...registerInformation,
+                  numero: value,
+                })
+              }
             />
           </View>
           <Text style={styles.title}>Cidade</Text>
           <View style={styles.areaInputCidade}>
             <TextInput
-              onChangeText={(text) => setCidade(text)}
+              onChangeText={(value) =>
+                setRegisterInformation({
+                  ...registerInformation,
+                  cidade: value,
+                })
+              }
               style={styles.Input}
             />
           </View>
 
           <View style={styles.areaButton}>
-            <TouchableOpacity onPress={() => handleCreateUser()}>
+            <TouchableOpacity onPress={cadastrar}>
               <Text style={styles.textButton}>CADASTRAR</Text>
             </TouchableOpacity>
           </View>
@@ -134,8 +209,7 @@ const Cadastro = ({ navigation }) => {
       </ScrollView>
     </SafeAreaView>
   );
-};
-export default Cadastro;
+}
 const styles = StyleSheet.create({
   conteinerPai: {
     flex: 1,

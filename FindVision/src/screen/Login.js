@@ -11,28 +11,32 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage, {
-  useAsyncStorage,
-} from '@react-native-async-storage/async-storage';
+import { auth } from '../config/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = ({ navigation }) => {
   const [hidePass, setHidePass] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
-    if (email === '' || password === '') {
-      alert('Ops...E obrigatório preencher todas as informacoes!');
-    } else {
-      const emailUser = await AsyncStorage.getItem('@asyncStorage:emailUser');
-      const passUser = await AsyncStorage.getItem('@asyncStorage:passUser');
-      const nomeUser = await AsyncStorage.getItem('@asyncStorage:nomeUser');
-      if (emailUser === email && passUser === password) {
-        alert('Sucesso✔ - Usuário logado!');
-      } else {
-        alert('Erro❌ - Usuário incorreto!');
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.replace('Perfil');
       }
-    }
+    });
+  }, []);
+  const login = async () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        navigation.replace('Perfil');
+      })
+      .catch((err) => {
+        console.log('erro', JSON.stringify(err));
+        if (err.code == 'auth/invalid-email') alert('E-mail inválido');
+        else if (err.code == 'auth/wrong-password') alert('Senha inválida');
+        else alert(err.message);
+      });
   };
   return (
     <SafeAreaView style={styles.conteinerPai}>
@@ -72,7 +76,7 @@ const Login = ({ navigation }) => {
       </View>
 
       <View>
-        <TouchableOpacity onPress={() => handleLogin()} style={styles.button}>
+        <TouchableOpacity onPress={login} style={styles.button}>
           <Text style={styles.TextButton}>ENTRAR</Text>
         </TouchableOpacity>
       </View>

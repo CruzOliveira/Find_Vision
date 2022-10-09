@@ -2,6 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../screen/Login';
 import Cadastro from '../screen/Cadastro';
+import Perfil from '../screen/Perfil';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,11 @@ export const MainStackNavigator = () => {
       <Stack.Screen
         name="Cadastro"
         component={Cadastro}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Perfil"
+        component={Perfil}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
